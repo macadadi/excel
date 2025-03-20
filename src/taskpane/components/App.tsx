@@ -20,6 +20,7 @@ const App = () => {
   const styles = useStyles();
   return (
     <div className={styles.root}>
+      <text>Import data from APX into this spreadsheet</text>
       <TextInsertion  createTable={createTable} />
     </div>
   );

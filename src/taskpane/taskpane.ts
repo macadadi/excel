@@ -1,6 +1,7 @@
 /* global Excel console */
 
-import { fetchData } from "./components/api";
+import { fetchData } from "./api";
+
 
 export type TableProp= {
   year: string
@@ -20,8 +21,12 @@ const sheetObj ={
     columns: "A1:F1"
   },
   entries: {
-    heading: ["id","client", "year","type","reason", "account","contraAccount","recordDate"],
-    columns: "A1:H1"
+    heading: ["id","client", "year","type","reason", "account","contraAccount","recordDate",
+      "amount","batch","costCenter1","costCenter2","currency","date","deliveryDate",
+     "description", "invoiceNr","isGeneralReversal","isOpeningBalance","note","receiptNr",
+     "credit"
+    ],
+    columns: "A1:V1"
   }
 }
 
