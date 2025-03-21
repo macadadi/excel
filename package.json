@@ -23,7 +23,8 @@
     "start": "office-addin-debugging start manifest.xml",
     "stop": "office-addin-debugging stop manifest.xml",
     "validate": "office-addin-manifest validate manifest.xml",
-    "watch": "webpack --mode development --watch"
+    "watch": "webpack --mode development --watch",
+    "web": "npm run start -- web --document 'https://axeins-my.sharepoint.com/:x:/r/personal/maricus_omondi_ax1_ai/_layouts/15/Doc.aspx?sourcedoc=%7B9CCAB9EB-F28E-45EE-A423-02E6D37843D5%7D&file=Book%201.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1&ct=1742406412830&wdOrigin=OFFICECOM-WEB.START.REC&cid=74a9104c-791d-4771-b5e4-ccde8e321195&wdPreviousSessionSrc=HarmonyWeb&wdPreviousSession=c80d4735-2095-4d35-8d6b-fb89ebe3d6a5'"
   },
   "dependencies": {
     "@fluentui/react-components": "^9.55.1",
@@ -44,6 +45,7 @@
     "@types/react-dom": "^18.2.21",
     "@types/webpack": "^5.28.5",
     "acorn": "^8.11.3",
+    "autoprefixer": "^10.4.21",
     "babel-loader": "^9.1.3",
     "copy-webpack-plugin": "^12.0.2",
     "eslint-plugin-office-addins": "^4.0.3",
@@ -60,8 +62,10 @@
     "office-addin-manifest": "^2.0.3",
     "office-addin-prettier-config": "^2.0.1",
     "os-browserify": "^0.3.0",
+    "postcss": "^8.5.3",
     "process": "^0.11.10",
     "source-map-loader": "^5.0.0",
+    "tailwindcss": "^3.4.17",
     "ts-loader": "^9.5.1",
     "typescript": "^5.4.2",
     "webpack": "^5.95.0",

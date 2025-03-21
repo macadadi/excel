@@ -19,7 +19,7 @@ const useStyles = makeStyles({
 const App = () => {
   const styles = useStyles();
   return (
-    <div className={styles.root}>
+    <div className={"bg-sky-500/100"}>
       <text>Import data from APX into this spreadsheet</text>
       <TextInsertion  createTable={createTable} />
     </div>
