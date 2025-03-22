@@ -7,10 +7,11 @@ export type TableProp= {
   year: string
   dataType: string
   tableName: string
+  account: string
 }
-export async function createTable({year,dataType,tableName}:TableProp) {
+export async function createTable({year,dataType,tableName,account}:TableProp) {
   await Excel.run(async (context) => {
-    const dataArray = await fetchData({year,dataType})
+    const dataArray = await fetchData({year,dataType,account})
 const sheetObj ={
   accounts: {
     heading: ["id", "Client", "Year", "Number", "Type", "Description"],

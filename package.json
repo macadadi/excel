@@ -24,7 +24,8 @@
     "stop": "office-addin-debugging stop manifest.xml",
     "validate": "office-addin-manifest validate manifest.xml",
     "watch": "webpack --mode development --watch",
-    "web": "npm run start -- web --document 'https://axeins-my.sharepoint.com/:x:/r/personal/maricus_omondi_ax1_ai/_layouts/15/Doc.aspx?sourcedoc=%7B9CCAB9EB-F28E-45EE-A423-02E6D37843D5%7D&file=Book%201.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1&ct=1742406412830&wdOrigin=OFFICECOM-WEB.START.REC&cid=74a9104c-791d-4771-b5e4-ccde8e321195&wdPreviousSessionSrc=HarmonyWeb&wdPreviousSession=c80d4735-2095-4d35-8d6b-fb89ebe3d6a5'"
+    "dev":"npm run dev-server",
+    "web": "npm run start -- web --document 'https://axeins-my.sharepoint.com/:x:/r/personal/maricus_omondi_ax1_ai/_layouts/15/Doc.aspx?sourcedoc=%7B9CCAB9EB-F28E-45EE-A423-02E6D37843D5%7D&file=Book%201.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1&ct=1742569831958&wdOrigin=OFFICECOM-WEB.START.REC&cid=291cd323-8b46-4197-b30c-24008cec6994&wdPreviousSessionSrc=HarmonyWeb&wdPreviousSession=f69380e5-515b-44af-a742-5943ad993473'"
   },
   "dependencies": {
     "@fluentui/react-components": "^9.55.1",

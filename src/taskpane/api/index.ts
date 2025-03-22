@@ -1,5 +1,5 @@
-export async function fetchData({year,dataType}){
-    const url = `http://localhost:5000/api/accounts/99999/accounting/${year}/${dataType}`
+export async function fetchData({year,dataType,account}){
+    const url = `http://localhost:5000/api/accounts/${account}/accounting/${year}/${dataType}`
     const token = 'rmFwQsX1.19fa351898d8db4b24a11eb9de0bd9ae6ca7a12ab33a974244f513248787b2c7'
     
     const data = await fetch(url, {

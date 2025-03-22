@@ -1,9 +1,6 @@
 import * as React from "react";
-import Header from "./Header";
-import HeroList, { HeroListItem } from "./HeroList";
 import TextInsertion from "./TextInsertion";
 import { makeStyles } from "@fluentui/react-components";
-import { Ribbon24Regular, LockOpen24Regular, DesignIdeas24Regular } from "@fluentui/react-icons";
 import { createTable } from "../taskpane";
 
 interface AppProps {
@@ -19,10 +16,12 @@ const useStyles = makeStyles({
 const App = () => {
   const styles = useStyles();
   return (
-    <div className={"bg-sky-500/100"}>
-      <text>Import data from APX into this spreadsheet</text>
-      <TextInsertion  createTable={createTable} />
-    </div>
+<div className="space-y-4 p-6 bg-white rounded-lg shadow-md max-w-md mx-auto">
+  <p className="text-lg font-medium text-gray-700 text-center">
+    Import data from APX into this spreadsheet
+  </p>
+    <TextInsertion createTable={createTable} />
+  </div>
   );
 };
 
