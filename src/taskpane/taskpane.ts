@@ -1,4 +1,3 @@
-/* global Excel console */
 
 import { fetchData } from "./api";
 
@@ -32,18 +31,51 @@ const sheetObj ={
 }
 
     const TableHeaders = sheetObj[dataType].heading 
-    const currentWorksheet = context.workbook.worksheets.getActiveWorksheet();
-    currentWorksheet.name = tableName;
-  const expensesTable = currentWorksheet.tables.add(sheetObj[dataType].columns, true /*hasHeaders*/);
-   
+    const currentWorksheet = context.workbook.worksheets;
+    const sheet = currentWorksheet.add(tableName)
+  const expensesTable = sheet.tables.add(sheetObj[dataType].columns, true /*hasHeaders*/);
     expensesTable.getHeaderRowRange().values =
       [TableHeaders];
     const transformedArray = dataArray.map( item => Object.values(item));
-    expensesTable.rows.add(null /*add at the end*/, transformedArray);
+    expensesTable.rows.add(null, transformedArray);
     expensesTable.getRange().format.autofitColumns();
     expensesTable.getRange().format.autofitRows();
-    
-  
+    await context.sync();
+    let currentSheet = context.workbook.worksheets.getItem(tableName);
+    currentSheet.activate();
+    currentSheet.load("name");
     await context.sync();
   });
+}
+
+export async function UpdateTable(config) {
+  await Excel.run(async (context) => {
+    const workbook = context.workbook;
+
+    const customProperty = workbook.properties.custom.add('APX', JSON.stringify(config));
+
+    // Load the 'value' property
+    customProperty.load("value");
+
+    // Synchronize to apply changes and fetch the value
+    await context.sync();
+
+    // Log the value of the custom property
+    console.log(customProperty.value, "CURRENT TEST");
+  }).catch((error) => {
+    console.error("Error in UpdateTable:", error);
+  });
+}
+export async function getWorkBookProperties() {
+  const property = await Excel.run(async (context) => {
+    const workbook = context.workbook;
+    const customProperty = workbook.properties.custom.getItem('APX')
+    customProperty.load("value");
+    await context.sync();
+    return JSON.parse(customProperty.value)
+  })
+  .catch((error) => {
+    console.error("Error in UpdateTable:", error);
+  });
+  return property
 }
