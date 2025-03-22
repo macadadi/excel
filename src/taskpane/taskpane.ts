@@ -51,17 +51,10 @@ const sheetObj ={
 export async function UpdateTable(config) {
   await Excel.run(async (context) => {
     const workbook = context.workbook;
-
     const customProperty = workbook.properties.custom.add('APX', JSON.stringify(config));
-
     // Load the 'value' property
     customProperty.load("value");
-
-    // Synchronize to apply changes and fetch the value
     await context.sync();
-
-    // Log the value of the custom property
-    console.log(customProperty.value, "CURRENT TEST");
   }).catch((error) => {
     console.error("Error in UpdateTable:", error);
   });
@@ -69,6 +62,7 @@ export async function UpdateTable(config) {
 export async function getWorkBookProperties() {
   const property = await Excel.run(async (context) => {
     const workbook = context.workbook;
+    // console.log(workbook.settings.items,"settings")
     const customProperty = workbook.properties.custom.getItem('APX')
     customProperty.load("value");
     await context.sync();
