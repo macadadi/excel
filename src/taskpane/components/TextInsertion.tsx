@@ -2,6 +2,7 @@ import * as React from "react";
 import { useState } from "react";
 import { Button, Input, Select } from "@fluentui/react-components";
 import { createTable, getWorkBookProperties, TableProp, UpdateTable } from "../taskpane";
+import ConfigurationgCard from "./ConfigurationgCard";
 
 
 const TextInsertion: React.FC = () => {
@@ -28,9 +29,7 @@ React.useEffect(()=>{
   return (
 <div>
   <div>
-  {configs?.map(conf=><div>
-    {conf?.tableName}
-  </div>)}
+  {configs?.map(conf=><ConfigurationgCard config={conf}/> )}
   </div>
 <div className="space-y-6 max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
   <div className="space-y-2">
