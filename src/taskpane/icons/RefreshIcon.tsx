@@ -1,6 +1,7 @@
 import React from "react";
+import { IconProps } from "../types";
 
-function ArrowPathIcon(props: IconProps) {
+function RefreshIcon(props: IconProps) {
   return (
     <svg fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
       <path
@@ -12,4 +13,4 @@ function ArrowPathIcon(props: IconProps) {
   );
 }
 
-export default ArrowPathIcon;
+export default RefreshIcon;
