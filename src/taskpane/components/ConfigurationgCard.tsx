@@ -4,7 +4,8 @@ import PencilIcon from "../icons/PencilIcon";
 import RefreshIcon from "../icons/RefreshIcon";
 import { refreshTable } from "../taskpane";
 
-function ConfigurationgCard({ config }) {
+function ConfigurationgCard({ config , handleDelete}) {
+
   return (
     <div className="flex mb-2 items-center justify-between p-4 py-2 bg-white shadow-sm rounded-lg border border-gray-200 hover:shadow-md hover:border-gray-300 hover:bg-gray-50 transition-all duration-200">
       <p className="text-lg font-semibold text-gray-800">{config.tableName}</p>
@@ -24,6 +25,7 @@ function ConfigurationgCard({ config }) {
         </button>
         <button
           title="trash"
+          onClick={()=>handleDelete(config)}
           className="p-2 bg-red-100 hover:bg-red-200 rounded-full transition-colors duration-200"
         >
           <TrashIcon stroke="currentColor" className="size-4 text-red-600" />
