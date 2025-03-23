@@ -3,7 +3,7 @@ export async function fetchData({year,dataType,account}){
     const token = 'rmFwQsX1.19fa351898d8db4b24a11eb9de0bd9ae6ca7a12ab33a974244f513248787b2c7'
     
     const data = await fetch(url, {
-      method: "GET", // or "POST", "PUT", "DELETE", etc.
+      method: "GET",
       headers: {
         "Authorization": `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -12,10 +12,7 @@ export async function fetchData({year,dataType,account}){
     
     })
       .then(response => {
-        // if (!response.ok) {
-        //   throw new Error(`HTTP error! Status: ${response.status}`);
-        // }
-        return response.json(); // or response.text() if it's not JSON
+        return response.json();
       })
       .then(data =>{
         if(dataType ==='entries'){

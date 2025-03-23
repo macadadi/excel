@@ -60,7 +60,7 @@ export async function createTable({ year, dataType, tableName, account }: TableP
   });
 }
 
-export async function UpdateTable(config: any) {
+export async function UpdateWorkBookProperties(config: any) {
   await Excel.run(async (context) => {
     const workbook = context.workbook;
     const customProperty = workbook.properties.custom.add("APX", JSON.stringify(config));

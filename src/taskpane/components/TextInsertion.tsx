@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { createTable, getWorkBookProperties, UpdateTable } from "../taskpane";
+import { createTable, getWorkBookProperties, UpdateWorkBookProperties } from "../taskpane";
 import ConfigurationgCard from "./ConfigurationgCard";
 import InputField from "./InputField";
 import SelectField from "./SelectField";
@@ -27,7 +27,7 @@ const TextInsertion: React.FC = () => {
     try {
       setIsLoading(true);
       await createTable({ year, dataType, tableName, account });
-      await UpdateTable([...configs, { year, dataType, tableName, account }]);
+      await UpdateWorkBookProperties([...configs, { year, dataType, tableName, account }]);
       getData();
     } catch (error) {
       console.error("Error creating table:", error);
@@ -38,7 +38,7 @@ const TextInsertion: React.FC = () => {
 
   const handleDelete = async (data) => {
     const updatedConfig = configs.filter((item) => item.tableName !== data.tableName);
-    await UpdateTable(updatedConfig);
+    await UpdateWorkBookProperties(updatedConfig);
     getData();
   };
 

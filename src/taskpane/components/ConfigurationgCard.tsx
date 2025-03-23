@@ -1,10 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import TrashIcon from "../icons/TrashIcon";
 import PencilIcon from "../icons/PencilIcon";
 import RefreshIcon from "../icons/RefreshIcon";
 import { refreshTable } from "../taskpane";
+import LoadingIcon from "../icons/LoadingIcon";
 
-function ConfigurationgCard({ config , handleDelete}) {
+function ConfigurationgCard({ config, handleDelete }) {
+  const [refreShing, setRefreshing] = useState(false);
+  const handleRefreshing = async () => {
+    setRefreshing(true)
+    try {
+      await refreshTable(config);
+    } catch (error) {
+      console.error("Error refreshing table:", error);
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   return (
     <div className="flex mb-2 items-center justify-between p-4 py-2 bg-white shadow-sm rounded-lg border border-gray-200 hover:shadow-md hover:border-gray-300 hover:bg-gray-50 transition-all duration-200">
@@ -13,9 +25,11 @@ function ConfigurationgCard({ config , handleDelete}) {
         <button
           title="refresh"
           className="p-2 bg-green-100 hover:bg-green-200 rounded-full transition-colors duration-200"
-          onClick={()=>refreshTable(config)}
-        >
-          <RefreshIcon stroke="currentColor" className="size-4 text-green-600" />
+          onClick={handleRefreshing}
+        >{
+          refreShing ? <LoadingIcon /> :  <RefreshIcon stroke="currentColor" className="size-4 text-green-600" />
+        }
+        
         </button>
         <button
           title="edit"
@@ -25,7 +39,7 @@ function ConfigurationgCard({ config , handleDelete}) {
         </button>
         <button
           title="trash"
-          onClick={()=>handleDelete(config)}
+          onClick={() => handleDelete(config)}
           className="p-2 bg-red-100 hover:bg-red-200 rounded-full transition-colors duration-200"
         >
           <TrashIcon stroke="currentColor" className="size-4 text-red-600" />
