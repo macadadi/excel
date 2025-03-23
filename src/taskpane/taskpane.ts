@@ -1,44 +1,24 @@
-
 import { fetchData } from "./api";
+import { replaceSpaceWithUnderScore, sheetObj } from "./utils";
 
+export type TableProp = {
+  year: string;
+  dataType: string;
+  tableName: string;
+  account: string;
+};
 
-export type TableProp= {
-  year: string
-  dataType: string
-  tableName: string
-  account: string
-}
-const sheetObj ={
-  accounts: {
-    heading: ["id", "Client", "Year", "Number", "Type", "Description"],
-    columns: "A1:F1"
-  },
-  'cost-centers': {
-    heading: ["client","description","id","name","system","year"],
-    columns: "A1:F1"
-  },
-  entries: {
-    heading: ["id","client", "year","type","reason", "account","contraAccount","recordDate",
-      "amount","batch","costCenter1","costCenter2","currency","date","deliveryDate",
-     "description", "invoiceNr","isGeneralReversal","isOpeningBalance","note","receiptNr",
-     "credit"
-    ],
-    columns: "A1:V1"
-  }
-}
-export async function createTable({year,dataType,tableName,account}:TableProp) {
+export async function createTable({ year, dataType, tableName, account }: TableProp) {
   await Excel.run(async (context) => {
-    const dataArray = await fetchData({year,dataType,account})
+    const dataArray = await fetchData({ year, dataType, account });
 
-
-    const TableHeaders = sheetObj[dataType].heading 
+    const TableHeaders = sheetObj[dataType].heading;
     const currentWorksheet = context.workbook.worksheets;
-    const sheet = currentWorksheet.add(tableName)
+    const sheet = currentWorksheet.add(tableName);
     const currentTable = sheet.tables.add(sheetObj[dataType].columns, true /*hasHeaders*/);
-     currentTable.name= replaceSpaceWithUnderScore(tableName)
-    currentTable.getHeaderRowRange().values =
-      [TableHeaders];
-    const transformedArray = dataArray.map( item => Object.values(item));
+    currentTable.name = replaceSpaceWithUnderScore(tableName);
+    currentTable.getHeaderRowRange().values = [TableHeaders];
+    const transformedArray = dataArray.map((item) => Object.values(item));
     currentTable.rows.add(null, transformedArray);
     currentTable.getRange().format.autofitColumns();
     currentTable.getRange().format.autofitRows();
@@ -53,7 +33,7 @@ export async function createTable({year,dataType,tableName,account}:TableProp) {
 export async function UpdateTable(config) {
   await Excel.run(async (context) => {
     const workbook = context.workbook;
-    const customProperty = workbook.properties.custom.add('APX', JSON.stringify(config));
+    const customProperty = workbook.properties.custom.add("APX", JSON.stringify(config));
     customProperty.load("value");
     await context.sync();
   }).catch((error) => {
@@ -63,59 +43,19 @@ export async function UpdateTable(config) {
 export async function getWorkBookProperties() {
   const property = await Excel.run(async (context) => {
     const workbook = context.workbook;
-    const customProperty = workbook.properties.custom.getItem('APX')
+    const customProperty = workbook.properties.custom.getItem("APX");
     customProperty.load("value");
     await context.sync();
-    return JSON.parse(customProperty.value)
-  })
-  .catch((error) => {
+    return JSON.parse(customProperty.value);
+  }).catch((error) => {
     console.error("Error in UpdateTable:", error);
   });
-  return property
-}
-
-
-
-// export async function refreshTable({ year, dataType, tableName, account }: TableProp) {
-//   await Excel.run(async (context) => {
-//     let sheet = context.workbook.worksheets.getItem(tableName);
-//     let farmData = sheet.getUsedRange();
-//     farmData.clear()
-//     await context.sync();
-//     createRefreshed({year,dataType,tableName,account})
-    
-// });
-// }
-const replaceSpaceWithUnderScore=(originalString: string)=>{
-  return originalString.replace(/ /g, "_")
+  return property;
 }
 
 export async function refreshTable({ year, dataType, tableName, account }: TableProp) {
   await Excel.run(async (context) => {
-    // Fetch the latest data
     const dataArray = await fetchData({ year, dataType, account });
-
-    // Define the table structure
-    const sheetObj = {
-      accounts: {
-        heading: ["id", "Client", "Year", "Number", "Type", "Description"],
-        columns: "A1:F1",
-      },
-      'cost-centers': {
-        heading: ["client", "description", "id", "name", "system", "year"],
-        columns: "A1:F1",
-      },
-      entries: {
-        heading: [
-          "id", "client", "year", "type", "reason", "account", "contraAccount", "recordDate",
-          "amount", "batch", "costCenter1", "costCenter2", "currency", "date", "deliveryDate",
-          "description", "invoiceNr", "isGeneralReversal", "isOpeningBalance", "note", "receiptNr",
-          "credit"
-        ],
-        columns: "A1:V1",
-      },
-    };
-
     const TableHeaders = sheetObj[dataType].heading;
 
     const currentWorksheet = context.workbook.worksheets.getItem(tableName);
@@ -124,7 +64,6 @@ export async function refreshTable({ year, dataType, tableName, account }: Table
     const existingTable = tables.getItemOrNullObject(replaceSpaceWithUnderScore(tableName));
     existingTable.load("name");
     await context.sync();
-console.log(  existingTable.name,'  existingTable   existingTable')
     let currentTable;
     if (existingTable.isNullObject) {
       currentTable = tables.add(sheetObj[dataType].columns, true /*hasHeaders*/);
@@ -142,8 +81,7 @@ console.log(  existingTable.name,'  existingTable   existingTable')
     currentTable.getRange().format.autofitRows();
     currentWorksheet.activate();
     await context.sync();
-  }).catch((error) => {
-    console.error("Error refreshing table:", error);
+  }).catch(async () => {
+    await createTable({ year, dataType, tableName, account });
   });
 }
-
