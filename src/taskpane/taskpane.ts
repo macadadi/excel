@@ -33,13 +33,13 @@ const sheetObj ={
     const TableHeaders = sheetObj[dataType].heading 
     const currentWorksheet = context.workbook.worksheets;
     const sheet = currentWorksheet.add(tableName)
-  const expensesTable = sheet.tables.add(sheetObj[dataType].columns, true /*hasHeaders*/);
-    expensesTable.getHeaderRowRange().values =
+  const currentTable = sheet.tables.add(sheetObj[dataType].columns, true /*hasHeaders*/);
+    currentTable.getHeaderRowRange().values =
       [TableHeaders];
     const transformedArray = dataArray.map( item => Object.values(item));
-    expensesTable.rows.add(null, transformedArray);
-    expensesTable.getRange().format.autofitColumns();
-    expensesTable.getRange().format.autofitRows();
+    currentTable.rows.add(null, transformedArray);
+    currentTable.getRange().format.autofitColumns();
+    currentTable.getRange().format.autofitRows();
     await context.sync();
     let currentSheet = context.workbook.worksheets.getItem(tableName);
     currentSheet.activate();
@@ -62,7 +62,6 @@ export async function UpdateTable(config) {
 export async function getWorkBookProperties() {
   const property = await Excel.run(async (context) => {
     const workbook = context.workbook;
-    // console.log(workbook.settings.items,"settings")
     const customProperty = workbook.properties.custom.getItem('APX')
     customProperty.load("value");
     await context.sync();
@@ -72,4 +71,31 @@ export async function getWorkBookProperties() {
     console.error("Error in UpdateTable:", error);
   });
   return property
+}
+
+export async function refreshTable({ year, dataType, tableName, account }: TableProp) {
+  await Excel.run(async (context) => {
+
+    const dataArray = await fetchData({ year, dataType, account });
+    const currentWorksheet = context.workbook.worksheets.getItem(tableName);
+    const tables = currentWorksheet.tables;
+    const table = tables.getItemOrNullObject(tableName);
+    table.load("name");
+    await context.sync();
+    if (currentWorksheet.isNullObject) {
+      throw new Error(`Table "${tableName}" not found.`);
+    }
+    console.log(table.name)
+    // const dataBodyRange = currentWorksheet.getDataBodyRange();
+    // dataBodyRange.clear(Excel.ClearApplyTo.contents);
+    // await context.sync();
+    // const transformedArray = dataArray.map((item) => Object.values(item));
+    // table.rows.add(null, transformedArray);
+    // table.getRange().format.autofitColumns();
+    // table.getRange().format.autofitRows();
+    // currentWorksheet.activate();
+    // await context.sync();
+  }).catch((error) => {
+    console.error("Error refreshing table:", error);
+  });
 }

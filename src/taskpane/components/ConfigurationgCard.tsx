@@ -2,6 +2,7 @@ import React from "react";
 import TrashIcon from "../icons/TrashIcon";
 import PencilIcon from "../icons/PencilIcon";
 import RefreshIcon from "../icons/RefreshIcon";
+import { refreshTable } from "../taskpane";
 
 function ConfigurationgCard({ config }) {
   return (
@@ -11,6 +12,7 @@ function ConfigurationgCard({ config }) {
         <button
           title="refresh"
           className="p-2 bg-green-100 hover:bg-green-200 rounded-full transition-colors duration-200"
+          onClick={()=>refreshTable(config)}
         >
           <RefreshIcon stroke="currentColor" className="size-4 text-green-600" />
         </button>
