@@ -6,18 +6,29 @@ import { refreshTable } from "../taskpane";
 import LoadingIcon from "../icons/LoadingIcon";
 
 function ConfigurationgCard({ config, handleDelete }) {
-  const [refreShing, setRefreshing] = useState(false);
+  const [isRefreShing, setIsRefreShing] = useState(false);
+  const [isDeleting,setIsDeleting]=useState(false)
   const handleRefreshing = async () => {
-    setRefreshing(true)
+    setIsRefreShing(true)
     try {
       await refreshTable(config);
     } catch (error) {
       console.error("Error refreshing table:", error);
     } finally {
-      setRefreshing(false);
+      setIsRefreShing(false);
     }
   };
+const onDelete=async()=>{
+  setIsDeleting(true)
+  try {
+    await handleDelete(config)
+  } catch (error) {
+    console.error("Error refreshing table:", error);
+  } finally {
+    setIsDeleting(false);
+  }
 
+}
   return (
     <div className="flex mb-2 items-center justify-between p-4 py-2 bg-white shadow-sm rounded-lg border border-gray-200 hover:shadow-md hover:border-gray-300 hover:bg-gray-50 transition-all duration-200">
       <p className="text-lg font-semibold text-gray-800">{config.tableName}</p>
@@ -27,7 +38,7 @@ function ConfigurationgCard({ config, handleDelete }) {
           className="p-2 bg-green-100 hover:bg-green-200 rounded-full transition-colors duration-200"
           onClick={handleRefreshing}
         >{
-          refreShing ? <LoadingIcon /> :  <RefreshIcon stroke="currentColor" className="size-4 text-green-600" />
+          isRefreShing ? <LoadingIcon /> :  <RefreshIcon stroke="currentColor" className="size-4 text-green-600" />
         }
         
         </button>
@@ -39,10 +50,10 @@ function ConfigurationgCard({ config, handleDelete }) {
         </button>
         <button
           title="trash"
-          onClick={() => handleDelete(config)}
+          onClick={onDelete}
           className="p-2 bg-red-100 hover:bg-red-200 rounded-full transition-colors duration-200"
         >
-          <TrashIcon stroke="currentColor" className="size-4 text-red-600" />
+         { isDeleting? <LoadingIcon /> : <TrashIcon stroke="currentColor" className="size-4 text-red-600" />}
         </button>
       </div>
     </div>
