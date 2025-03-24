@@ -24,7 +24,7 @@
     "stop": "office-addin-debugging stop manifest.xml",
     "validate": "office-addin-manifest validate manifest.xml",
     "watch": "webpack --mode development --watch",
-    "dev":"npm run dev-server",
+    "dev": "npm run dev-server",
     "web": "npm run start -- web --document 'https://axeins-my.sharepoint.com/:x:/r/personal/maricus_omondi_ax1_ai/_layouts/15/Doc.aspx?sourcedoc=%7B2F06DA03-8B7D-41CD-9313-E407607277A4%7D&file=Book%202.xlsx&action=editnew&mobileredirect=true&wdNewAndOpenCt=1742673178544&ct=1742673179713&wdOrigin=OFFICECOM-WEB.START.NEW&wdPreviousSessionSrc=HarmonyWeb&wdPreviousSession=b24ddb2d-a36a-4a02-af33-731a582c25db&cid=f733baa8-5429-46b4-9370-3fe258e88818'"
   },
   "dependencies": {
@@ -49,6 +49,7 @@
     "autoprefixer": "^10.4.21",
     "babel-loader": "^9.1.3",
     "copy-webpack-plugin": "^12.0.2",
+    "css-loader": "^7.1.2",
     "eslint-plugin-office-addins": "^4.0.3",
     "eslint-plugin-react": "^7.28.0",
     "file-loader": "^6.2.0",
@@ -64,8 +65,10 @@
     "office-addin-prettier-config": "^2.0.1",
     "os-browserify": "^0.3.0",
     "postcss": "^8.5.3",
+    "postcss-loader": "^8.1.1",
     "process": "^0.11.10",
     "source-map-loader": "^5.0.0",
+    "style-loader": "^4.0.0",
     "tailwindcss": "^3.4.17",
     "ts-loader": "^9.5.1",
     "typescript": "^5.4.2",

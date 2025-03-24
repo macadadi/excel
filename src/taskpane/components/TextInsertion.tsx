@@ -45,6 +45,9 @@ const TextInsertion: React.FC = () => {
 
   return (
     <div>
+      <p className="text-lg font-medium text-gray-700 text-center">
+        Import data from APX into this spreadsheet
+      </p>
       <div>
         {configs?.map((conf) => (
           <ConfigurationgCard key={conf.tableName} config={conf} handleDelete={handleDelete} />
@@ -55,7 +58,11 @@ const TextInsertion: React.FC = () => {
           <SelectField
             label="Data type"
             value={dataType}
-            options={["accounts", "cost-centers", "entries"]}
+            options={[
+              { label: "accounts", value: "accounts" },
+              { label: "cost-centers", value: "cost-centers" },
+              { label: "entries", value: "entries" },
+            ]}
             onChange={(e) => setDataType(e.target.value)}
           />
           <InputField

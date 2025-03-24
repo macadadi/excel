@@ -1,4 +1,3 @@
-
 import { fetchData } from "./api";
 import { replaceSpaceWithUnderScore, sheetObj } from "./utils";
 
@@ -9,12 +8,18 @@ export type TableProp = {
   account: string;
 };
 
-async function fetchAndTransformData({ year, dataType, account }: Omit<TableProp,'tableName' >) {
+async function fetchAndTransformData({ year, dataType, account }: Omit<TableProp, "tableName">) {
   const dataArray = await fetchData({ year, dataType, account });
   return dataArray.map((item) => Object.values(item));
 }
 
-async function addTableToSheet(context: Excel.RequestContext, sheet: Excel.Worksheet, tableName: string, dataType: string, transformedArray: any[][]) {
+async function addTableToSheet(
+  context: Excel.RequestContext,
+  sheet: Excel.Worksheet,
+  tableName: string,
+  dataType: string,
+  transformedArray: any[][]
+) {
   const TableHeaders = sheetObj[dataType].heading;
   const currentTable = sheet.tables.add(sheetObj[dataType].columns, true);
   currentTable.name = replaceSpaceWithUnderScore(tableName);
@@ -25,7 +30,11 @@ async function addTableToSheet(context: Excel.RequestContext, sheet: Excel.Works
   await context.sync();
 }
 
-async function updateTableData(context: Excel.RequestContext, table: Excel.Table, transformedArray: any[][]) {
+async function updateTableData(
+  context: Excel.RequestContext,
+  table: Excel.Table,
+  transformedArray: any[][]
+) {
   const dataBodyRange = table.getDataBodyRange();
   dataBodyRange.delete(Excel.DeleteShiftDirection.up);
   await context.sync();
@@ -35,7 +44,12 @@ async function updateTableData(context: Excel.RequestContext, table: Excel.Table
   await context.sync();
 }
 
-async function ensureTableExists(context: Excel.RequestContext, tableName: string, dataType: string, transformedArray: any[][]) {
+async function ensureTableExists(
+  context: Excel.RequestContext,
+  tableName: string,
+  dataType: string,
+  transformedArray: any[][]
+) {
   const currentWorksheet = context.workbook.worksheets.getItem(tableName);
   const tables = currentWorksheet.tables;
   const existingTable = tables.getItemOrNullObject(replaceSpaceWithUnderScore(tableName));
@@ -90,5 +104,23 @@ export async function refreshTable({ year, dataType, tableName, account }: Table
     await ensureTableExists(context, tableName, dataType, transformedArray);
   }).catch(async () => {
     await createTable({ year, dataType, tableName, account });
+  });
+}
+
+export async function updateUserLocale(local: "en" | "de") {
+  await Excel.run(async (context) => {
+    const settings = context.workbook.settings;
+    settings.add("locale", local);
+    await context.sync();
+  });
+}
+
+export async function getUserLocale() {
+  await Excel.run(async (context) => {
+    const settings = context.workbook.settings;
+    const locale = settings.getItem("locale");
+    locale.load("value");
+    await context.sync();
+    return locale
   });
 }
