@@ -1,14 +1,16 @@
 import { fetchData } from "./api";
-import { replaceSpaceWithUnderScore, sheetObj } from "./utils";
+import { dataType, Locale } from "./types";
+import { generateRangeFromData, getColumns, replaceSpaceWithUnderScore, } from "./utils";
 
 export type TableProp = {
   year: string;
-  dataType: string;
+  dataType: dataType;
   tableName: string;
   account: string;
+  locale: Locale
 };
 
-async function fetchAndTransformData({ year, dataType, account }: Omit<TableProp, "tableName">) {
+async function fetchAndTransformData({ year, dataType, account}: Omit<TableProp, "tableName" | "locale">) {
   const dataArray = await fetchData({ year, dataType, account });
   return dataArray.map((item) => Object.values(item));
 }
@@ -17,11 +19,14 @@ async function addTableToSheet(
   context: Excel.RequestContext,
   sheet: Excel.Worksheet,
   tableName: string,
-  dataType: string,
-  transformedArray: any[][]
+  dataType: dataType,
+  transformedArray: any[][],
+  locale: Locale
 ) {
-  const TableHeaders = sheetObj[dataType].heading;
-  const currentTable = sheet.tables.add(sheetObj[dataType].columns, true);
+  const columns = getColumns(dataType,locale)
+  const rowRange = generateRangeFromData(columns)
+  const TableHeaders = columns;
+  const currentTable = sheet.tables.add(rowRange, true);
   currentTable.name = replaceSpaceWithUnderScore(tableName);
   currentTable.getHeaderRowRange().values = [TableHeaders];
   currentTable.rows.add(null, transformedArray);
@@ -47,8 +52,9 @@ async function updateTableData(
 async function ensureTableExists(
   context: Excel.RequestContext,
   tableName: string,
-  dataType: string,
-  transformedArray: any[][]
+  dataType: dataType,
+  transformedArray: any[][],
+  locale: Locale
 ) {
   const currentWorksheet = context.workbook.worksheets.getItem(tableName);
   const tables = currentWorksheet.tables;
@@ -57,18 +63,18 @@ async function ensureTableExists(
   await context.sync();
 
   if (existingTable.isNullObject) {
-    await addTableToSheet(context, currentWorksheet, tableName, dataType, transformedArray);
+    await addTableToSheet(context, currentWorksheet, tableName, dataType, transformedArray,locale);
   } else {
     await updateTableData(context, existingTable, transformedArray);
   }
   currentWorksheet.activate();
 }
 
-export async function createTable({ year, dataType, tableName, account }: TableProp) {
+export async function createTable({ year, dataType, tableName, account, locale }: TableProp) {
   await Excel.run(async (context) => {
     const transformedArray = await fetchAndTransformData({ year, dataType, account });
     const currentWorksheet = context.workbook.worksheets.add(tableName);
-    await addTableToSheet(context, currentWorksheet, tableName, dataType, transformedArray);
+    await addTableToSheet(context, currentWorksheet, tableName, dataType, transformedArray,locale);
     currentWorksheet.activate();
     await context.sync();
   });
@@ -98,12 +104,12 @@ export async function getWorkBookProperties() {
   return property;
 }
 
-export async function refreshTable({ year, dataType, tableName, account }: TableProp) {
+export async function refreshTable({ year, dataType, tableName, account,locale }: TableProp) {
   await Excel.run(async (context) => {
     const transformedArray = await fetchAndTransformData({ year, dataType, account });
-    await ensureTableExists(context, tableName, dataType, transformedArray);
+    await ensureTableExists(context, tableName, dataType, transformedArray,locale);
   }).catch(async () => {
-    await createTable({ year, dataType, tableName, account });
+    await createTable({ year, dataType, tableName, account,locale});
   });
 }
 

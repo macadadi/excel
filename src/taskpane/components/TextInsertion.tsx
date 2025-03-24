@@ -5,10 +5,11 @@ import ConfigurationgCard from "./ConfigurationgCard";
 import InputField from "./InputField";
 import SelectField from "./SelectField";
 import Button from "./Button";
+import { dataType, Locale } from "../types";
 
-const TextInsertion: React.FC = () => {
+const TextInsertion = ({locale}) => {
   const [year, setYear] = useState("2024");
-  const [dataType, setDataType] = useState("accounts");
+  const [dataType, setDataType] = useState<dataType>("accounts");
   const [tableName, setTableName] = useState("");
   const [account, setAccount] = useState("99999");
   const [configs, setConfigs] = useState([]);
@@ -27,7 +28,7 @@ const TextInsertion: React.FC = () => {
   const handleCreate = async () => {
     try {
       setIsLoading(true);
-      await createTable({ year, dataType, tableName, account });
+      await createTable({ year, dataType, tableName, account ,locale});
       await UpdateWorkBookProperties([...configs, { year, dataType, tableName, account }]);
       getData();
     } catch (error) {
@@ -63,7 +64,7 @@ const TextInsertion: React.FC = () => {
               { label: "cost-centers", value: "cost-centers" },
               { label: "entries", value: "entries" },
             ]}
-            onChange={(e) => setDataType(e.target.value)}
+            onChange={(e) => setDataType(e.target.value as dataType)}
           />
           <InputField
             label="Account"
