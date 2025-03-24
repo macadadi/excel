@@ -1,5 +1,6 @@
 import * as React from "react";
 import TextInsertion from "./TextInsertion";
+import Settings from "../features/Settings";
 
 const App = () => {
   return (
@@ -8,6 +9,7 @@ const App = () => {
     Import data from APX into this spreadsheet
   </p>
     <TextInsertion />
+    <Settings/>
   </div>
   );
 };
