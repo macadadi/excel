@@ -116,11 +116,12 @@ export async function updateUserLocale(local: "en" | "de") {
 }
 
 export async function getUserLocale() {
-  await Excel.run(async (context) => {
+const locale = await Excel.run(async (context) => {
     const settings = context.workbook.settings;
     const locale = settings.getItem("locale");
     locale.load("value");
-    await context.sync();
-    return locale
-  });
+    await context.sync()
+    return locale.value
+  })
+  return locale
 }
