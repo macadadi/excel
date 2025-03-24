@@ -1,7 +1,7 @@
 import React from "react";
 import { IconProps } from "../types";
 
-function PencilIcon(props: IconProps) {
+function PencilIcon(props?: IconProps) {
   return (
     <svg fill="none" viewBox="0 0 24 24" strokeWidth={1.5} {...props}>
       <path
