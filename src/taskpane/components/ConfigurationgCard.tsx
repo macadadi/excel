@@ -77,7 +77,7 @@ const onDelete=async()=>{
               isLoading={isDeleting}
               loadingText="Deleting.."
               className="ml-4 w-[200px] bg-red-400 hover:bg-red-300"
-              defaultText="Save"
+              defaultText="Confirm"
             />
           </div>
 </div>

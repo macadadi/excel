@@ -5,23 +5,22 @@ import Tabs from "./Tabs";
 import { getUserLocale } from "../taskpane";
 import { Locale } from "../types";
 const App = () => {
-  const [locale,setLocale]= React.useState<Locale>('de')
+  const [locale, setLocale] = React.useState<Locale>("de");
 
-  React.useEffect(()=>{
-  const getLocale = async () => {
-    const data = await getUserLocale()
-    setLocale(data)
-  console.log(data,"current test data")
-  };
-   getLocale()
-  console.log(locale, "current test locale");
-  },[])
+  React.useEffect(() => {
+    const getLocale = async () => {
+      const data = await getUserLocale();
+      setLocale(data);
+      console.log(data, "current test data");
+    }
+    getLocale()
+  }, []);
   return (
     <div className="space-y-4 p-6 bg-white rounded-lg shadow-md max-w-md mx-auto">
       <Tabs
         tabs={[
-          { label: "Data Import", content: <TextInsertion locale={locale}/> },
-          { label: "Settings", content: <Settings /> },
+          { label: "Data Import", content: <TextInsertion locale={locale} /> },
+          { label: "Settings", content: <Settings setLocale={setLocale} locale={locale}/> },
         ]}
       />
     </div>

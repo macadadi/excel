@@ -93,11 +93,11 @@ const columnDef = {
     { key: 'receiptNr', label_de: 'Belegnummer', label_en: 'Receipt Number' },
     { key: 'note', label_de: 'Notiz', label_en: 'Note' },
     { key: 'batch', label_de: 'Batch', label_en: 'Batch' },
-    {
-      key: 'correlations',
-      label_de: 'Korrelationen',
-      label_en: 'Correlations',
-    },
+    // {
+    //   key: 'correlations',
+    //   label_de: 'Korrelationen',
+    //   label_en: 'Correlations',
+    // },
   ],
   'cost-centers': [
     { key: 'id', label_de: 'ID', label_en: 'Id' },

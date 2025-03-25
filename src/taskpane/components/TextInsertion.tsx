@@ -7,11 +7,11 @@ import SelectField from "./SelectField";
 import Button from "./Button";
 import { dataType, Locale } from "../types";
 
-const TextInsertion = ({locale}) => {
-  const [year, setYear] = useState("2024");
+const TextInsertion = ({ locale }: { locale: Locale }) => {
+  const [year, setYear] = useState("");
   const [dataType, setDataType] = useState<dataType>("accounts");
   const [tableName, setTableName] = useState("");
-  const [account, setAccount] = useState("99999");
+  const [account, setAccount] = useState("");
   const [configs, setConfigs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [importData, setImportData] = useState(false);
@@ -28,9 +28,13 @@ const TextInsertion = ({locale}) => {
   const handleCreate = async () => {
     try {
       setIsLoading(true);
-      await createTable({ year, dataType, tableName, account ,locale});
+      await createTable({ year, dataType, tableName, account, locale });
       await UpdateWorkBookProperties([...configs, { year, dataType, tableName, account }]);
       getData();
+      setYear("")
+      setTableName("")
+      setAccount("")
+      setImportData(false)
     } catch (error) {
       console.error("Error creating table:", error);
     } finally {

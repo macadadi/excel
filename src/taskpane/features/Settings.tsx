@@ -4,15 +4,17 @@ import useModal from "../hooks/useModal";
 import SelectField from "../components/SelectField";
 import { updateUserLocale } from "../taskpane";
 import Button from "../components/Button";
+import { Locale } from "../types";
 
-function Settings() {
+function Settings({setLocale,locale}) {
   const { isOpen, onClose, onOpen } = useModal();
-  const [language, setLanguage] = useState<"en" | "de">("en");
+  const [language, setLanguage] = useState<Locale>(locale);
   const [isLoading, setIsLoading] = useState(false);
   const setUserLocale = async () => {
     try {
       setIsLoading(true);
       await updateUserLocale(language);
+      setLocale(language)
     } catch (err) {
       console.log(err);
     } finally {
