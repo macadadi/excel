@@ -3,7 +3,8 @@ import TextInsertion from "./TextInsertion";
 import Settings from "../features/Settings";
 import Tabs from "./Tabs";
 import { getUserLocale } from "../taskpane";
-import { Locale } from "../types";
+import { Locale, TranslationKeys } from "../types";
+import { getStrings } from "../locale";
 const App = () => {
   const [locale, setLocale] = React.useState<Locale>("de");
 
@@ -15,12 +16,18 @@ const App = () => {
     }
     getLocale()
   }, []);
+  const t = (key: TranslationKeys) => {
+    return getStrings(key, locale);
+  };
   return (
     <div className="space-y-4 p-6 bg-white rounded-lg shadow-md max-w-md mx-auto">
       <Tabs
         tabs={[
-          { label: "Data Import", content: <TextInsertion locale={locale} /> },
-          { label: "Settings", content: <Settings setLocale={setLocale} locale={locale}/> },
+          { label: t("dataImportMenuItemLabel"), content: <TextInsertion locale={locale} /> },
+          {
+            label: t("settingsMenuItemLabel"),
+            content: <Settings setLocale={setLocale} locale={locale} />,
+          },
         ]}
       />
     </div>

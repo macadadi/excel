@@ -5,11 +5,12 @@ import ConfigurationgCard from "./ConfigurationgCard";
 import InputField from "./InputField";
 import SelectField from "./SelectField";
 import Button from "./Button";
-import { dataType, Locale } from "../types";
+import { DataType, Locale, TranslationKeys } from "../types";
+import { getStrings } from "../locale";
 
 const TextInsertion = ({ locale }: { locale: Locale }) => {
   const [year, setYear] = useState("");
-  const [dataType, setDataType] = useState<dataType>("accounts");
+  const [dataType, setDataType] = useState<DataType>("accounts");
   const [tableName, setTableName] = useState("");
   const [account, setAccount] = useState("");
   const [configs, setConfigs] = useState([]);
@@ -47,12 +48,12 @@ const TextInsertion = ({ locale }: { locale: Locale }) => {
     await UpdateWorkBookProperties(updatedConfig);
     getData();
   };
-
+const t = (key: TranslationKeys) => {
+  return getStrings(key, locale);
+};
   return (
     <div>
-      <p className="text-lg font-medium text-gray-700 text-center">
-        Import data from APX into this spreadsheet
-      </p>
+      <p className="text-lg font-medium text-gray-700 text-center">{t("sidebarDescription")}</p>
       <div>
         {configs?.map((conf) => (
           <ConfigurationgCard key={conf.tableName} config={conf} handleDelete={handleDelete} />
@@ -61,26 +62,26 @@ const TextInsertion = ({ locale }: { locale: Locale }) => {
       {importData ? (
         <div className="space-y-6 max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
           <SelectField
-            label="Data type"
+            label={t("dataTypeInputLabel")}
             value={dataType}
             options={[
-              { label: "accounts", value: "accounts" },
-              { label: "cost-centers", value: "cost-centers" },
-              { label: "entries", value: "entries" },
+              { label: t("accounts"), value: "accounts" },
+              { label: t("costCenters"), value: "cost-centers" },
+              { label: t("entries"), value: "entries" },
             ]}
-            onChange={(e) => setDataType(e.target.value as dataType)}
+            onChange={(e) => setDataType(e.target.value as DataType)}
           />
           <InputField
-            label="Account"
-            placeholder="eg. Accounting"
-            ariaLabel="Account"
+            label={t("clientInputLabel")}
+            placeholder={t("clientInputPlaceholder")}
+            ariaLabel={t("clientInputLabel")}
             value={account}
             onChange={(e) => setAccount(e.target.value)}
           />
           <InputField
-            label="Year"
-            placeholder="eg. 2024"
-            ariaLabel="Year"
+            label={t("yearInputLabel")}
+            placeholder={t("yearInputPlaceholder")}
+            ariaLabel={t("yearInputLabel")}
             value={year}
             onChange={(e) => setYear(e.target.value)}
           />
@@ -111,7 +112,7 @@ const TextInsertion = ({ locale }: { locale: Locale }) => {
           isLoading={isLoading}
           onClick={() => setImportData(true)}
           className="w-full bg-green-400 hover:bg-green-700"
-          defaultText="Import data"
+          defaultText={t("addImportTitle")}
         />
       )}
     </div>

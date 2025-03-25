@@ -1,10 +1,10 @@
 import { fetchData } from "./api";
-import { dataType, Locale } from "./types";
+import { DataType, Locale } from "./types";
 import { generateRangeFromData, getColumns, replaceSpaceWithUnderScore, } from "./utils";
 
 export type TableProp = {
   year: string;
-  dataType: dataType;
+  dataType: DataType;
   tableName: string;
   account: string;
   locale: Locale
@@ -19,7 +19,7 @@ async function addTableToSheet(
   context: Excel.RequestContext,
   sheet: Excel.Worksheet,
   tableName: string,
-  dataType: dataType,
+  dataType: DataType,
   transformedArray: any[][],
   locale: Locale
 ) {
@@ -52,7 +52,7 @@ async function updateTableData(
 async function ensureTableExists(
   context: Excel.RequestContext,
   tableName: string,
-  dataType: dataType,
+  dataType: DataType,
   transformedArray: any[][],
   locale: Locale
 ) {
