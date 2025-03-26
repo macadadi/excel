@@ -18,7 +18,7 @@ const App = () => {
 
   }, []);
   const fetchUser = async()=>{
-    let accessToken = await Office.auth.getAccessToken()
+    let accessToken = await OfficeRuntime.auth.getAccessToken();
     console.log(accessToken, "accessToken  accessToken  accessToken ")
   }
   fetchUser()

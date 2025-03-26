@@ -1,6 +1,6 @@
 import * as React from 'react'
-import CloseIcon from '../icons/CloseIcon';
 import { ModalProps } from '../types';
+import CloseIcon from '../icons/CloseIcon'
 
 const Modal: React.FC<ModalProps> = ({
     isOpen,
