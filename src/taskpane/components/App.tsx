@@ -12,10 +12,16 @@ const App = () => {
     const getLocale = async () => {
       const data = await getUserLocale();
       setLocale(data);
-      console.log(data, "current test data");
+
     }
     getLocale()
+
   }, []);
+  const fetchUser = async()=>{
+    let accessToken = await Office.auth.getAccessToken()
+    console.log(accessToken, "accessToken  accessToken  accessToken ")
+  }
+  fetchUser()
   const t = (key: TranslationKeys) => {
     return getStrings(key, locale);
   };

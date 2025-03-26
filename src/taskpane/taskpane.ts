@@ -129,5 +129,12 @@ const locale = await Excel.run(async (context) => {
     await context.sync()
     return locale.value
   })
+  try{
+    console.log(locale,"locale")
+  const token = await Office.auth.getAccessToken().then(token => token)
+  console.log(token,"current token")
+  }catch(err){
+    console.log(err,"an error occured")
+  }
   return locale
 }

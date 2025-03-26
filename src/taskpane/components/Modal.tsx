@@ -1,5 +1,5 @@
 import * as React from 'react'
-import CloseIcon from '../icons/closeIcon';
+import CloseIcon from '../icons/CloseIcon';
 import { ModalProps } from '../types';
 
 const Modal: React.FC<ModalProps> = ({
